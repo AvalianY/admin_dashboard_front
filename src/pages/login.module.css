@@ -12,6 +12,9 @@
 .login picture {
   display: contents;
 }
+.login source {
+  display: none;
+}
 .brand p {
   font-size: 20px;
   font-weight: 600;
@@ -102,5 +105,34 @@
     height: 345.113px;
     right: -198.395px;
     bottom: -82.113px;
+  }
+}
+@media (min-width: 1440px) {
+  .login {
+    min-height: max(800px, 100dvh);
+    padding: 28px 100px 80px;
+  }
+  .content {
+    display: grid;
+    grid-template-columns: 614px 323px;
+    column-gap: 150px;
+    align-items: start;
+    padding-top: 226px;
+  }
+  .content h1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .form {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 9px;
+  }
+  .pill {
+    top: 122px;
+  }
+  .decoration {
+    right: -185.395px;
+    bottom: -88.113px;
   }
 }

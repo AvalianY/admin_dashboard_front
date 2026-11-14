@@ -21,6 +21,12 @@ export default defineConfig({
       grepInvert: /all six mobile pages fit/,
       use: { viewport: { width: 768, height: 1024 } },
     },
+    {
+      name: "desktop-flows",
+      testMatch: /mobile\.spec\.ts/,
+      grepInvert: /all six mobile pages fit/,
+      use: { viewport: { width: 1440, height: 800 } },
+    },
   ],
   webServer: {
     command: "npm run dev",

@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         session,
         user: session?.user ?? null,
+        canEdit: session?.user.role === "admin",
         checking: !!session && verified !== session.accessToken,
         error: state.error,
         login,

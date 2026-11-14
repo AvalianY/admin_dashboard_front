@@ -1,7 +1,8 @@
 import { expect, test, type Locator } from "@playwright/test";
 import { authenticate, mockApi } from "./mock-api";
 
-const widths = [320, 340, 360, 375, 376, 390, 425, 500, 600, 767, 768, 1440];
+// Frontend!A5 starts Desktop at 1440px; its geometry is covered in desktop.spec.ts.
+const widths = [320, 340, 360, 375, 376, 390, 425, 500, 600, 767, 768, 1439];
 
 async function expectCenteredDialog(dialog: Locator, shellX: number, shellWidth: number) {
   await expect(dialog).toBeVisible();

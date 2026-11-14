@@ -37,6 +37,9 @@
 .addProduct:hover > span {
   background: var(--accent-hover);
 }
+.addProduct:disabled {
+  opacity: 0.55;
+}
 .tableGap {
   margin-top: 20px;
 }
@@ -93,5 +96,37 @@
   }
   .records[data-kind="orders"] > div:last-of-type {
     padding-inline: 0;
+  }
+}
+@media (min-width: 1440px) {
+  .records,
+  .records[data-kind="orders"] {
+    padding: 75px 40px 40px 120px;
+  }
+  .records > .tableGap {
+    width: 100%;
+  }
+  .records > div:last-of-type:not(.addRow) {
+    display: none;
+  }
+  .addProduct {
+    gap: 16px;
+    width: 177px;
+    white-space: nowrap;
+  }
+  .addProduct > span {
+    flex: none;
+  }
+  .products .addRow {
+    align-items: flex-end;
+  }
+  .customerInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .customerInfo > button:first-child {
+    flex: 1;
+    min-width: 0;
   }
 }

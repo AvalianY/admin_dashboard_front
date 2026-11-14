@@ -36,7 +36,8 @@ async function expectSemanticMarkup(page: Page) {
   ).toBe(true);
 }
 
-for (const width of [768, 820, 1024, 1280, 1439, 1440]) {
+// 1439px is the last Tablet width; 1440px is validated by the Desktop suite.
+for (const width of [768, 820, 1024, 1280, 1439]) {
   test(`bounded tablet geometry, tables and keyboard navigation at ${width}px`, async ({
     page,
   }) => {
@@ -256,8 +257,10 @@ test("tablet forms match approved geometry, labels and native modal focus", asyn
           ),
         ).toBe(true);
       }
-      await page.locator("header button").evaluate((button) => button.focus());
-      await expect(page.locator("header button")).not.toBeFocused();
+      // Header now also contains a hidden Desktop logout button; target the Tablet control.
+      const menuTrigger = page.getByRole("button", { name: "Open menu", exact: true });
+      await menuTrigger.evaluate((button) => button.focus());
+      await expect(menuTrigger).not.toBeFocused();
       await page.keyboard.press("Escape");
       await expect(dialog).toHaveCount(0);
       await expect(button).toBeFocused();

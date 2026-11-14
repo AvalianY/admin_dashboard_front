@@ -126,7 +126,18 @@ export function RecordForm({
         ? "Add a new suppliers"
         : "Add Customers";
   return (
-    <Modal title={title} onDismiss={onDismiss} busy={isSubmitting}>
+    <Modal
+      title={title}
+      onDismiss={onDismiss}
+      busy={isSubmitting}
+      className={
+        kind === "suppliers"
+          ? styles.supplierModal
+          : kind === "products" && !original
+            ? styles.addProductModal
+            : undefined
+      }
+    >
       <form
         noValidate
         onSubmit={submit}

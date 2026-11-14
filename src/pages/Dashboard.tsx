@@ -19,6 +19,7 @@ const columns: Column<Customer>[] = [
     title: "Name",
     width: 105,
     tabletWidth: 255,
+    desktopWidth: 223,
     render: (row) => (
       <span className={table.person}>
         <Avatar name={row.name} photo={row.photo} />
@@ -26,12 +27,20 @@ const columns: Column<Customer>[] = [
       </span>
     ),
   },
-  { key: "email", title: "Email", width: 151, tabletWidth: 279, render: (row) => row.email },
+  {
+    key: "email",
+    title: "Email",
+    width: 151,
+    tabletWidth: 279,
+    desktopWidth: 269,
+    render: (row) => row.email,
+  },
   {
     key: "spent",
     title: "Spent",
     width: 79,
     tabletWidth: 170,
+    desktopWidth: 138,
     render: (row) => formatAmount(row.spent),
   },
 ];

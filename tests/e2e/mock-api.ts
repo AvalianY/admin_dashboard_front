@@ -8,18 +8,20 @@ import type {
   Session,
   Supplier,
   Transaction,
+  User,
 } from "../../src/types/api";
 
 // Synthetic acceptance data only. No original dataset or production credentials.
-export const user = {
+export const user: User = {
   id: "000000000000000000000001",
   name: "Test administrator",
   email: "admin@example.test",
+  role: "admin",
 };
 const dates = { createdAt: null, updatedAt: null };
 const id = (prefix: number, index: number) => String(prefix * 1000 + index).padStart(24, "0");
-export const makeSession = (): Session => ({
-  user,
+export const makeSession = (profile = user): Session => ({
+  user: profile,
   accessToken: randomUUID(),
   tokenType: "Bearer",
   expiresAt: new Date(Date.now() + 3600000).toISOString(),
@@ -105,8 +107,9 @@ export interface Captured {
 }
 export async function mockApi(
   page: Page,
-  options: { finance?: boolean; dashboard?: Partial<Dashboard> } = {},
+  options: { finance?: boolean; dashboard?: Partial<Dashboard>; user?: User } = {},
 ) {
+  const profile = options.user ?? user;
   const products = makeProducts();
   const suppliers = makeSuppliers();
   const customers = makeCustomers();
@@ -128,8 +131,8 @@ export async function mockApi(
         contentType: "application/json",
         body: JSON.stringify({ data, meta }),
       });
-    if (path === "/user/login") return reply(makeSession());
-    if (path === "/user/user-info") return reply(user);
+    if (path === "/user/login") return reply(makeSession(profile));
+    if (path === "/user/user-info") return reply(profile);
     if (path === "/user/logout") return route.fulfill({ status: 204 });
     if (path === "/dashboard") {
       const finance: Transaction[] | null = options.finance
@@ -148,7 +151,7 @@ export async function mockApi(
         : null;
       return reply(
         {
-          user,
+          user: profile,
           totals: {
             products: products.length,
             suppliers: suppliers.length,
@@ -193,6 +196,11 @@ export async function mockApi(
       return route.fulfill({
         status: 404,
         json: { error: { code: "NOT_FOUND", message: "Unmatched mock route." } },
+      });
+    if (profile.role !== "admin" && method !== "GET")
+      return route.fulfill({
+        status: 403,
+        json: { error: { code: "DEMO_READ_ONLY", message: "Demo accounts have read-only access" } },
       });
     if (method === "GET" && recordId && kind === "customers") {
       const customer = customers.find((row) => row.id === recordId);

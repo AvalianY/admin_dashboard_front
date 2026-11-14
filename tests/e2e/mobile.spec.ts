@@ -89,7 +89,8 @@ test("route protection, login validation, secure storage, restore and server log
   expect(
     requests.filter((request) => request.path === "/user/user-info").length,
   ).toBeGreaterThanOrEqual(2);
-  await page.getByRole("button", { name: "Open menu" }).click();
+  if ((page.viewportSize()?.width ?? 375) < 1440)
+    await page.getByRole("button", { name: "Open menu" }).click();
   await page.getByRole("button", { name: "Log out" }).click();
   await expect(page).toHaveURL(/\/login$/);
   expect(
@@ -124,14 +125,19 @@ test("navigation, compatibility aliases, menu Escape and focus return", async ({
   await authenticate(page);
   await page.goto("/home");
   await expect(page).toHaveURL(/\/dashboard$/);
-  const trigger = page.getByRole("button", { name: "Open menu" });
-  await trigger.click();
-  await expect(page.getByRole("dialog", { name: "Main menu" })).toBeVisible();
-  await page.screenshot({ path: info.outputPath("menu.png") });
-  await page.keyboard.press("Escape");
-  await expect(trigger).toBeFocused();
-  await trigger.click();
-  await page.getByRole("link", { name: "Products", exact: true }).click();
+  if ((page.viewportSize()?.width ?? 375) >= 1440) {
+    await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
+    await page.locator("aside").getByRole("link", { name: "Products", exact: true }).click();
+  } else {
+    const trigger = page.getByRole("button", { name: "Open menu" });
+    await trigger.click();
+    await expect(page.getByRole("dialog", { name: "Main menu" })).toBeVisible();
+    await page.screenshot({ path: info.outputPath("menu.png") });
+    await page.keyboard.press("Escape");
+    await expect(trigger).toBeFocused();
+    await trigger.click();
+    await page.getByRole("link", { name: "Products", exact: true }).click();
+  }
   await expect(page).toHaveURL(/\/products$/);
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/dasboard");
@@ -197,7 +203,10 @@ test("product create/edit/delete work only against intercepted synthetic API", a
   const dialog = page.getByRole("dialog");
   const tablet = (page.viewportSize()?.width ?? 375) >= 768;
   await expect(dialog).toHaveCSS("width", tablet ? "536px" : "335px");
-  await expect(dialog).toHaveCSS("height", tablet ? "392px" : "484px");
+  await expect(dialog).toHaveCSS(
+    "height",
+    (page.viewportSize()?.width ?? 375) >= 1440 ? "412px" : tablet ? "392px" : "484px",
+  );
   await dialog.getByRole("heading").click();
   await page.screenshot({ path: info.outputPath("product-add.png") });
   await dialog.getByLabel("Product Info", { exact: true }).fill("Created Product");

@@ -13,11 +13,68 @@ const routes: { path: string; title: string; icon: IconName; active: IconName }[
   { path: "suppliers", title: "Suppliers", icon: "pharmacy", active: "pharmacy-active" },
   { path: "customers", title: "Customers", icon: "users", active: "users-active" },
 ];
-function MobileMenu({ onDismiss }: { onDismiss: () => void }) {
+function Navigation({
+  onNavigate,
+  iconSize = (16 * 38) / 44,
+}: {
+  onNavigate?: () => void;
+  iconSize?: number;
+}) {
+  return (
+    <nav aria-label="Main navigation" className={styles.navigation}>
+      <ul>
+        {routes.map((route) => (
+          <li key={route.path}>
+            <NavLink to={`/${route.path}`} aria-label={route.title} onClick={onNavigate}>
+              {({ isActive }) => (
+                <span className={`${styles.navCircle} ${isActive ? styles.selected : ""}`}>
+                  <Icon name={isActive ? route.active : route.icon} size={iconSize} />
+                </span>
+              )}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+function LogoutButton({
+  pending,
+  onLogout,
+  desktop = false,
+}: {
+  pending: boolean;
+  onLogout: () => void;
+  desktop?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${styles.logout} ${desktop ? styles.headerLogout : ""}`}
+      aria-label="Log out"
+      aria-busy={pending}
+      disabled={pending}
+      onClick={onLogout}
+    >
+      <span className={styles.logoutDefault}>
+        <Icon name="logout" size={desktop ? 58 : (58 * 38) / 44} />
+      </span>
+      <span className={styles.logoutHover}>
+        <Icon name="logout-hover" size={desktop ? 58 : (58 * 38) / 44} />
+      </span>
+    </button>
+  );
+}
+function MobileMenu({
+  onDismiss,
+  pending,
+  onLogout,
+}: {
+  onDismiss: () => void;
+  pending: boolean;
+  onLogout: () => void;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-  const [pending, setPending] = useState(false);
   useEffect(() => {
     const previous = document.activeElement;
     const element = dialog.current;
@@ -27,22 +84,6 @@ function MobileMenu({ onDismiss }: { onDismiss: () => void }) {
       if (previous instanceof HTMLElement && previous.isConnected) previous.focus();
     };
   }, []);
-  const signOut = async () => {
-    if (pending) return;
-    setPending(true);
-    try {
-      await logout();
-      navigate("/login", { replace: true });
-    } catch {
-      navigate("/login", {
-        replace: true,
-        state: {
-          notice:
-            "Local session cleared. Server logout could not be confirmed; the session will expire at its original expiry time.",
-        },
-      });
-    }
-  };
   return (
     <dialog
       ref={dialog}
@@ -62,43 +103,41 @@ function MobileMenu({ onDismiss }: { onDismiss: () => void }) {
       >
         <Icon name="close" />
       </button>
-      <nav aria-label="Main navigation">
-        <ul>
-          {routes.map((route) => (
-            <li key={route.path}>
-              <NavLink to={`/${route.path}`} aria-label={route.title} onClick={onDismiss}>
-                {({ isActive }) => (
-                  <span className={`${styles.navCircle} ${isActive ? styles.selected : ""}`}>
-                    <Icon name={isActive ? route.active : route.icon} size={(16 * 38) / 44} />
-                  </span>
-                )}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <button
-        type="button"
-        className={styles.logout}
-        aria-label="Log out"
-        aria-busy={pending}
-        disabled={pending}
-        onClick={() => void signOut()}
-      >
-        <span className={styles.logoutDefault}>
-          <Icon name="logout" size={(58 * 38) / 44} />
-        </span>
-        <span className={styles.logoutHover}>
-          <Icon name="logout-hover" size={(58 * 38) / 44} />
-        </span>
-      </button>
+      <Navigation onNavigate={onDismiss} />
+      <LogoutButton pending={pending} onLogout={onLogout} />
     </dialog>
   );
 }
 export function Layout() {
   const [menu, setMenu] = useState(false);
+  const [pending, setPending] = useState(false);
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1440px)");
+    const closeMenu = () => {
+      if (media.matches) setMenu(false);
+    };
+    media.addEventListener("change", closeMenu);
+    return () => media.removeEventListener("change", closeMenu);
+  }, []);
+  const signOut = async () => {
+    if (pending) return;
+    setPending(true);
+    try {
+      await logout();
+      navigate("/login", { replace: true });
+    } catch {
+      navigate("/login", {
+        replace: true,
+        state: {
+          notice:
+            "Local session cleared. Server logout could not be confirmed; the session will expire at its original expiry time.",
+        },
+      });
+    }
+  };
   const page = pathname.split("/")[1];
   const breadcrumb = page === "dashboard" ? "Dasboard" : `All ${page}`;
   return (
@@ -134,9 +173,19 @@ export function Layout() {
             </span>
           </p>
         </div>
+        <LogoutButton pending={pending} onLogout={() => void signOut()} desktop />
       </header>
+      <aside className={styles.sidebar} aria-label="Sidebar">
+        <Navigation iconSize={16} />
+      </aside>
       <Outlet />
-      {menu && <MobileMenu onDismiss={() => setMenu(false)} />}
+      {menu && (
+        <MobileMenu
+          onDismiss={() => setMenu(false)}
+          pending={pending}
+          onLogout={() => void signOut()}
+        />
+      )}
     </>
   );
 }

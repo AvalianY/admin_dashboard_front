@@ -7,6 +7,7 @@ export interface Column<T> {
   title: string;
   width: number;
   tabletWidth?: number;
+  desktopWidth?: number;
   render: (row: T) => ReactNode;
   sort?: string;
 }
@@ -43,6 +44,10 @@ export function DataTable<T extends { id: string }>({
     (total, column) => total + (column.tabletWidth ?? column.width),
     0,
   );
+  const desktopWidth = columns.reduce(
+    (total, column) => total + (column.desktopWidth ?? column.tabletWidth ?? column.width),
+    0,
+  );
   useEffect(() => {
     const element = viewport.current;
     if (!element) return;
@@ -72,6 +77,7 @@ export function DataTable<T extends { id: string }>({
               {
                 "--table-width": `${width}px`,
                 "--tablet-table-width": `${tabletWidth}px`,
+                "--desktop-table-width": `${desktopWidth}px`,
               } as CSSProperties
             }
           >
@@ -85,6 +91,7 @@ export function DataTable<T extends { id: string }>({
                       {
                         "--column-width": `${column.width}px`,
                         "--tablet-column-width": `${column.tabletWidth ?? column.width}px`,
+                        "--desktop-column-width": `${column.desktopWidth ?? column.tabletWidth ?? column.width}px`,
                       } as CSSProperties
                     }
                   />

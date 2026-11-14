@@ -75,7 +75,7 @@
   height: 32px;
   background: transparent;
 }
-.menu nav ul {
+.navigation ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -83,7 +83,7 @@
   flex-direction: column;
   gap: 14px;
 }
-.menu nav a {
+.navigation a {
   display: flex;
   width: 38px;
   height: 38px;
@@ -139,6 +139,10 @@
   place-items: center;
   padding: 20px;
 }
+.sidebar,
+.headerLogout {
+  display: none;
+}
 @media (min-width: 768px) {
   .header {
     padding-inline: 32px;
@@ -163,7 +167,7 @@
   .menuClose {
     left: 38px;
   }
-  .menu nav a,
+  .navigation a,
   .navCircle,
   .logout {
     width: 44px;
@@ -185,5 +189,44 @@
   .logout > span > span {
     transform: scale(calc(44 / 38));
     transform-origin: top left;
+  }
+}
+@media (min-width: 1440px) {
+  .header {
+    padding-inline: 20px 40px;
+    gap: 60px;
+  }
+  .burger {
+    display: none;
+  }
+  .logo {
+    align-self: flex-start;
+    margin-top: 18px;
+  }
+  .heading {
+    margin-left: 0;
+  }
+  .headerLogout {
+    display: block;
+    position: relative;
+    align-self: flex-start;
+    left: auto;
+    bottom: auto;
+    margin: 18px 0 0 auto;
+  }
+  .headerLogout > span > span {
+    transform: none;
+  }
+  .sidebar {
+    display: block;
+    position: fixed;
+    inset: 80px auto 0 var(--mobile-shell-inset);
+    width: 80px;
+    padding: 39px 0 0 18px;
+    border-right: 1px solid var(--border);
+    background: #f7f8fa;
+  }
+  .sidebar .navCircle > span {
+    transform: none;
   }
 }

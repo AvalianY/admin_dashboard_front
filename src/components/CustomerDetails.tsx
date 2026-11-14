@@ -1,4 +1,5 @@
 import { useResource } from "../hooks/useResource";
+import { useAuth } from "../app/auth-context";
 import type { CustomerDetails as Details } from "../types/api";
 import { formatAmount, formatDate, unknown } from "../utils/format";
 import { Button, Loader, Modal, Notice, StatusBadge } from "./ui";
@@ -13,6 +14,7 @@ export function CustomerDetails({
   onDismiss: () => void;
   onEdit: (customer: Details["customer"]) => void;
 }) {
+  const { canEdit } = useAuth();
   const result = useResource<Details>(`/customers/${id}`);
   const customer = result.data?.customer;
   return (
@@ -87,7 +89,9 @@ export function CustomerDetails({
                 </ul>
               )}
               <div className={styles.actions}>
-                <Button onClick={() => onEdit(customer)}>Edit</Button>
+                <Button disabled={!canEdit} onClick={() => onEdit(customer)}>
+                  Edit
+                </Button>
                 <Button variant="secondary" onClick={onDismiss}>
                   Close
                 </Button>

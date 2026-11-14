@@ -3,6 +3,7 @@ import type { Session, User } from "../types/api";
 export interface AuthState {
   session: Session | null;
   user: User | null;
+  canEdit: boolean;
   checking: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;

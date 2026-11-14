@@ -228,3 +228,53 @@
     letter-spacing: -0.7px;
   }
 }
+@media (min-width: 1440px) {
+  .dashboard {
+    padding: 20px 40px 40px 120px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 20px;
+    align-content: start;
+  }
+  .stats {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 240px);
+  }
+  .recent {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 0;
+  }
+  .finance {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0;
+    border: 0;
+    outline: 1px solid var(--border);
+    outline-offset: -1px;
+  }
+  .finance h2 {
+    height: 64px;
+    padding-inline: 20px;
+  }
+  .financeBody {
+    padding-inline: 20px;
+  }
+  .today {
+    padding-block: 20px;
+    border-bottom: 0;
+    box-shadow: 0 1px 0 var(--border);
+  }
+  .recent tbody tr:last-child td:not(:last-child) {
+    position: relative;
+  }
+  .recent tbody tr:last-child td:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 100%;
+    height: 10px;
+    border-right: 1px solid var(--border);
+    pointer-events: none;
+  }
+}

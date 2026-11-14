@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useResource } from "../hooks/useResource";
+import { useAuth } from "../app/auth-context";
 import type {
   Collection,
   Customer,
@@ -25,7 +26,16 @@ type DialogState =
   | { type: "delete"; product: Product }
   | { type: "details"; id: string }
   | null;
+function subscribeDesktop(listener: () => void) {
+  const media = window.matchMedia("(min-width: 1440px)");
+  media.addEventListener("change", listener);
+  return () => media.removeEventListener("change", listener);
+}
+const desktopSnapshot = () => window.matchMedia("(min-width: 1440px)").matches;
+const narrowSnapshot = () => false;
 export function Records({ kind }: { kind: Collection }) {
+  const { canEdit } = useAuth();
+  const desktop = useSyncExternalStore(subscribeDesktop, desktopSnapshot, narrowSnapshot);
   const [name, setName] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<{ key: string; order: "asc" | "desc" }>({
@@ -68,6 +78,7 @@ export function Records({ kind }: { kind: Collection }) {
       type="button"
       className={round ? table.roundAction : table.edit}
       aria-label={`Edit ${row.name}`}
+      disabled={!canEdit}
       onClick={() => edit(row)}
     >
       <Icon name="edit" size={round ? 16 : 14} />
@@ -116,6 +127,7 @@ export function Records({ kind }: { kind: Collection }) {
             <button
               className={`${table.roundAction} ${table.danger}`}
               aria-label={`Delete ${row.name}`}
+              disabled={!canEdit}
               onClick={() => setDialog({ type: "delete", product: row as Product })}
             >
               <Icon name="trash" />
@@ -214,6 +226,34 @@ export function Records({ kind }: { kind: Collection }) {
     orders: [225, 158, 131, 172, 122, 152],
   };
   columns = columns.map((column, index) => ({ ...column, tabletWidth: tabletWidths[kind][index] }));
+  if (desktop && kind === "customers") {
+    columns = columns.filter((column) => column.key !== "action");
+    columns[0] = {
+      ...columns[0],
+      render: (row) => (
+        <div className={styles.customerInfo}>
+          <button
+            type="button"
+            className={table.rowLink}
+            onClick={() => setDialog({ type: "details", id: row.id })}
+          >
+            {person(row)}
+          </button>
+          {editAction(row as Customer, true)}
+        </div>
+      ),
+    };
+  }
+  const desktopWidths = {
+    products: [296, 230, 199, 226, 163, 166],
+    suppliers: [211, 188, 166, 215, 162, 189, 149],
+    customers: [280, 299, 213, 263, 225, 0],
+    orders: [285, 218, 191, 232, 184, 170],
+  };
+  columns = columns.map((column, index) => ({
+    ...column,
+    desktopWidth: desktopWidths[kind][index],
+  }));
   const saved = () => {
     setDialog(null);
     if (kind === "customers") setPage(1);
@@ -246,6 +286,7 @@ export function Records({ kind }: { kind: Collection }) {
             <button
               type="button"
               className={styles.addProduct}
+              disabled={!canEdit}
               onClick={() => setDialog({ type: "form" })}
             >
               <span>
@@ -257,6 +298,7 @@ export function Records({ kind }: { kind: Collection }) {
             <Button
               variant="outline"
               className={styles.add}
+              disabled={!canEdit}
               onClick={() => setDialog({ type: "form" })}
             >
               {addText}
@@ -278,11 +320,13 @@ export function Records({ kind }: { kind: Collection }) {
           setPage(1);
         }}
         onRow={
-          kind === "customers" ? (row) => setDialog({ type: "details", id: row.id }) : undefined
+          kind === "customers" && !desktop
+            ? (row) => setDialog({ type: "details", id: row.id })
+            : undefined
         }
       />
       <Pagination page={currentPage} pages={pages} onPage={setPage} />
-      {dialog?.type === "form" && kind !== "orders" && (
+      {canEdit && dialog?.type === "form" && kind !== "orders" && (
         <RecordForm
           kind={kind as RecordKind}
           original={dialog.original}
@@ -290,7 +334,7 @@ export function Records({ kind }: { kind: Collection }) {
           onSaved={saved}
         />
       )}
-      {dialog?.type === "delete" && (
+      {canEdit && dialog?.type === "delete" && (
         <DeleteProduct
           product={dialog.product}
           onDismiss={() => setDialog(null)}

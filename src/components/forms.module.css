@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: 14px;
 }
+@media (min-width: 1440px) {
+  .addProductModal {
+    padding-bottom: 60px;
+  }
+  .supplierModal {
+    top: 8px;
+  }
+}
 .field {
   min-width: 0;
 }

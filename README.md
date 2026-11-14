@@ -1,92 +1,187 @@
-# E-Pharmacy frontend
+<div align="center">
 
-Mobile and tablet administration application built from the approved E-Pharmacy Figma design and the existing backend contract. Stage 1 Mobile is owner-approved and published as `3541e1d1ba03db3969e4cac90927c5ecd15b67ad`. Mobile is fluid from 320 to 375 pixels; from 376 through 767 pixels its shared shell stays centered at 375 pixels, with 335 pixels of content and 20-pixel gutters. At 768 pixels the tablet layout uses a centered 768-pixel maximum shell and 704-pixel content with 32-pixel gutters. Wider viewports retain this bounded tablet layout. Stage 2 Tablet is local for owner acceptance; Desktop is a separate stage and is not enabled.
+# E-Pharmacy
 
-## Run locally
+### Eine responsive Administrationsoberfläche für ein Apothekensystem
 
-Use Node.js 26.13.x and npm, with Google Chrome installed for browser tests.
+[![React](https://img.shields.io/badge/React-19.3.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8.3.8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.65.1-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
+
+[Deutsch](README.md) · [Українська](README.uk.md) · [English](README.en.md)
+
+[Frontend](https://github.com/AvalianY/admin_dashboard_front) · [Backend](https://github.com/AvalianY/admin_dashboard_back) · [Swagger](https://e-pharmacy-api-kz62.onrender.com/api-docs/)
+
+</div>
+
+## Inhaltsverzeichnis
+
+- [Über das Projekt](#über-das-projekt)
+- [Funktionen](#funktionen)
+- [Responsive Design](#responsive-design)
+- [Technologien](#technologien)
+- [Seiten und Routen](#seiten-und-routen)
+- [Architektur](#architektur)
+- [API-Integration](#api-integration)
+- [Demo-Zugang](#demo-zugang)
+- [Installation und Start](#installation-und-start)
+- [Umgebungsvariablen](#umgebungsvariablen)
+- [Verfügbare Skripte](#verfügbare-skripte)
+- [Tests und Qualität](#tests-und-qualität)
+- [Deployment](#deployment)
+- [Autor](#autor)
+
+## Über das Projekt
+
+**E-Pharmacy** ist ein administratives Dashboard für Produkte, Lieferanten, Kunden und historische Bestellungen. Die React-Anwendung verbindet das freigegebene Figma-Design mit einer geschützten REST API. Frontend und Backend sind zwei eigenständige Anwendungen desselben individuell entwickelten Projekts.
+
+## Funktionen
+
+- Anmeldung, geschützte Routen, Wiederherstellung einer geprüften Session und Logout
+- Dashboard mit Gesamtzählern, getrennten 30-Tage-Dialogen, letzten Kunden und bestätigten Tagesfinanzen
+- Produktkatalog: Erstellen, Bearbeiten und bestätigtes logisches Löschen für Admin
+- Lieferanten: Erstellen/Bearbeiten; exakte Geldwerte und unveränderte historische BDT-Daten
+- Kunden: Erstellen, Profilbearbeitung, Detailansicht und bestätigte Historie
+- Historische Bestellungen mit ausschließlich lesendem Zugriff
+- Namenssuche, Filterung, unterstützte Sortierung und Pagination mit fünf Datensätzen
+- Gemeinsame Formulare mit React Hook Form/Yup, Lade-, Fehler-, Leer- und Konfliktzuständen
+- Responsive Navigation, SVG-Sprite, lokale Inter-Schrift und tastaturbedienbare native Dialoge
+- Serverseitig geschützter Demo-Lesezugriff; Änderungen sind auch bei direkten API-Aufrufen gesperrt
+
+## Responsive Design
+
+Mobile First: 320–375 px flexibel; 376–767 px zentrierter Container mit maximal 375 px. Tablet beginnt bei 768 px und bleibt bis 1439 px auf maximal 768 px begrenzt. Desktop beginnt bei 1440 px: zentrierter Container mit maximal 1440 px, Sidebar 80 px und Inhaltsbereich 1280 px. Tabellen scrollen auf kleineren Viewports innerhalb ihrer Panels; Desktop zeigt alle vorgesehenen Spalten.
+
+Anwendungsscreenshots mit ausdrücklich synthetischen Testdaten; keine Produktionskontaktdaten oder Zugangsdaten.
+
+<details>
+<summary>Screenshots anzeigen</summary>
+
+### Desktop
+
+![Dashboard desktop](docs/screenshots/dashboard-desktop.png)
+
+### Tablet
+
+![Dashboard tablet](docs/screenshots/dashboard-tablet.png)
+
+### Mobile
+
+![Dashboard mobile](docs/screenshots/dashboard-mobile.png)
+
+</details>
+
+## Technologien
+
+| Technologie | Version | Verwendung |
+| --- | --- | --- |
+| [React](https://react.dev/) | 19.3.1 | Benutzeroberfläche |
+| [TypeScript](https://www.typescriptlang.org/) | 6.0.3 | Statische Typen |
+| [Vite](https://vite.dev/) | 8.3.8 | Entwicklung und Build |
+| [React Router](https://reactrouter.com/) | 8.5.1 | Routing und Routenschutz |
+| [React Hook Form](https://react-hook-form.com/) | 7.92.0 | Formularzustand |
+| [Yup](https://github.com/jquense/yup) | 1.7.1 | Formularvalidierung |
+| [Vitest](https://vitest.dev/) | 5.1.0 | Unit-Tests |
+| [Playwright](https://playwright.dev/) | 1.65.1 | Browser-Tests |
+
+CSS Modules und Fetch API sind integrierte Werkzeuge und haben keine separate Paketversion.
+
+## Seiten und Routen
+
+| Route | Aufgabe |
+| --- | --- |
+| `/login` | Login, Validierung und Passwort-Sichtbarkeit |
+| `/dashboard` | Kennzahlen, Zeitraum-Dialoge und aktuelle Daten |
+| `/orders` | Historische Bestellungen, Suche und Sortierung |
+| `/products` | Produktkatalog und Admin-CRUD |
+| `/suppliers` | Lieferanten und Admin-Bearbeitung |
+| `/customers` | Serverseitige Pagination, Kundenprofile und Historie |
+
+`/` → Login / Dashboard; `/home`, `/dasboard` → `/dashboard`.
+
+## Architektur
+
+Gemeinsame Komponenten und CSS Modules bedienen alle drei Layouts. Es gibt keine zusätzliche State-Bibliothek oder UI-Suite. Abgebrochene Leseanfragen werden verworfen; Schreibanfragen werden nicht automatisch wiederholt. Erfolgreiche Änderungen laden die betroffenen Listen neu.
+
+```text
+src/
+├── app/          # AuthProvider, routing, Layout
+├── components/   # DataTable, forms, dialogs, controls
+├── pages/        # Login, Dashboard, Records
+├── hooks/        # useResource
+├── services/     # API, session, validation, payloads
+├── styles/       # Global styles
+├── types/        # API DTOs
+└── utils/        # Formatting
+public/           # Fonts, images, icons.svg
+tests/            # Unit and browser tests
+```
+
+## API-Integration
+
+[Backend](https://github.com/AvalianY/admin_dashboard_back) · [Live API](https://e-pharmacy-api-kz62.onrender.com) · [Swagger / OpenAPI](https://e-pharmacy-api-kz62.onrender.com/api-docs/)
+
+Die Anwendung verwendet relative `/api`-URLs. Vite leitet lokale Entwicklungs-/Preview-Anfragen über einen begrenzten Proxy an die bestehende HTTPS-API weiter. Bearer Tokens kommen ausschließlich aus dem Login, bleiben in `sessionStorage` und werden nach Reload über `user-info` geprüft. Passwörter werden nicht gespeichert; 401, Ablauf und Logout entfernen die Session. Die serverseitig bestätigte Rolle steuert die Bedienmöglichkeiten. Ein unkonfigurierter Benutzer erhält keine Bearbeitungsrechte.
+
+Geldwerte bleiben exakte Dezimalstrings. Kein BDT/EUR-Umrechnen und keine erfundenen Daten oder Kunden-/Bestellbeziehungen. Suppliers Amount zeigt nur die Zahl: aktueller Betrag, sonst historischer Betrag, sonst —. Dieser Fallback verändert weder das EUR-Formular noch nullable PUT. Nur in den freigegebenen 30-Tage-Dialogen werden unbekannte Produkt-/Lieferantenzahlen als 0 dargestellt; die API-Werte bleiben unverändert.
+
+## Demo-Zugang
+
+Die Rolle `demo` nutzt dasselbe Login und dieselbe Session-Verwaltung wie `admin`. Sie darf Dashboard, Listen, Suche, Filter, Sortierung, Pagination sowie Kundendetails/-historie verwenden und sich abmelden. Add/Edit/Delete sind deaktiviert. Alle sieben schreibenden Geschäftsvorgänge werden zusätzlich vom Backend mit `403 DEMO_READ_ONLY` abgelehnt; CORS-Ablehnung verwendet einen anderen Fehlercode.
+
+**Der öffentliche Demo-Zugang ist noch nicht aktiviert.** Der geschützte Server muss erst gesondert ausgerollt und geprüft werden; anschließend darf das Konto sicher initialisiert werden. Ein Demo-Passwort wird weder mitgeliefert noch veröffentlicht. Siehe den [Demo-Runbook](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/demo-access.md).
+
+## Installation und Start
+
+Voraussetzungen: Node.js 26.13.x (Paketgrenze >=26 <27), npm und für Browser-Tests Google Chrome. Das Repository enthält kein Passwort. Für echte lokale Anmeldung werden autorisierte Zugangsdaten des konfigurierten Backends benötigt.
 
 ```sh
+git clone https://github.com/AvalianY/admin_dashboard_front.git
+cd admin_dashboard_front
 npm ci
 npm run dev
 ```
 
-Open [the local application](http://127.0.0.1:5173). No account or password is included in this repository.
+[http://127.0.0.1:5173](http://127.0.0.1:5173)
 
-The application requests relative `/api` URLs. Vite forwards them to the fixed [public backend](https://e-pharmacy-api-kz62.onrender.com), removes the local Origin header upstream, and retains HTTPS verification and Bearer authentication. Both development and preview servers bind to loopback and reject unrelated origins and hosts. The backend CORS policy is unchanged. No frontend hosting configuration or deployment is included.
+## Umgebungsvariablen
 
-Only `VITE_API_BASE_URL=/api` is supported. The non-secret example is in `.env.example`; no environment file is necessary for the default local setup.
+Die einzige Frontend-Variable ist `VITE_API_BASE_URL=/api` (Standardwert). `.env.example` enthält dieses nicht geheime Beispiel; eine lokale `.env` ist optional. Der aktuelle Client akzeptiert ausschließlich `/api`. MongoDB URI, JWT-Schlüssel und Passwörter gehören niemals in Vite-Variablen oder den Browser-Build.
 
-## Pages and behavior
+```env
+VITE_API_BASE_URL=/api
+```
 
-| Route        | Functionality                                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------------------------- |
-| `/login`     | Login, validation, password visibility, current-session expiry                                              |
-| `/dashboard` | Overall counters, last-30-day dialog on each counter, recent customers, today's confirmed financial records |
-| `/orders`    | Read-only list, supported server search/sort, local pagination                                              |
-| `/products`  | Search/sort, pagination, create, edit, confirmed logical deletion                                           |
-| `/suppliers` | Search, pagination, create, edit, preserved unknown EUR and legacy BDT                                      |
-| `/customers` | Server pagination, search, create, profile edit, details and confirmed history                              |
+## Verfügbare Skripte
 
-`/` redirects according to authentication. `/home` and `/dasboard` are compatibility redirects. Administrative routes require a verified session.
+| Befehl | Verwendung |
+| --- | --- |
+| `npm run dev` | Entwicklungsserver auf Loopback |
+| `npm run typecheck` | TypeScript prüfen |
+| `npm run lint` | ESLint ausführen |
+| `npm run test` | Unit-Tests ausführen |
+| `npm run test:e2e` | Playwright mit synthetischer API |
+| `npm run build` | Produktions-Build nach dist/ |
+| `npm run preview` | Gebauten Client lokal prüfen |
+| `npm run check` | TypeScript, ESLint, Unit-Tests und Build |
 
-## Architecture
-
-- React, TypeScript, Vite, React Router and CSS Modules.
-- React Hook Form and Yup for forms; Fetch API for transport.
-- `src/app`: routing, layout and session provider.
-- `src/pages`: six shared mobile/tablet pages and their CSS Modules.
-- `src/components`: shared controls, tables, record forms and dialogs.
-- `src/services`: API errors, validation, session persistence and explicit payload whitelists.
-- `src/hooks`: abortable reads with explicit retry.
-- `src/types` and `src/utils`: API types and precision-preserving formatting.
-- `public`: local fonts, original-design images and the SVG sprite.
-- `tests`: unit/contract checks and browser acceptance using synthetic intercepted API responses.
-
-There is no global data cache, additional state library, UI kit or icon dependency. Page reads are refreshed after successful mutations and when revisiting Dashboard. Effects abort obsolete reads; writes are never automatically retried.
-
-## Data rules
-
-- Page size is five. Customers send `page` and `limit=5`; other lists paginate the complete supported API response after server filtering/sorting.
-- Technical MongoDB identifiers identify rows and requests. Legacy duplicates remain separate.
-- Existing `Heart`/`Leg` products may retain their current category or move to an approved category. New products use the nine approved categories.
-- Money remains an exact decimal string. The interface never uses floating-point conversion for money or converts BDT to EUR. The Suppliers Amount cell shows only the formatted number: known EUR amount first, otherwise legacy BDT amount, otherwise —. This display fallback does not populate the EUR edit field or change nullable PUT behavior.
-- Unknown source values and completeness metadata remain unchanged in the API client. Historical/completeness explanations are omitted throughout the interface; absent financial records and history use `—`.
-- Dashboard totals and last-30-day values are separate. In the statistics dialogs only, null Products/Suppliers values display `0` by owner approval; Customers uses its actual API value (or `—` if unknown). The source nulls remain intact and no additional statistics requests are made. The dialog retains the actual API UTC period when available.
-- Customer PATCH sends only changed profile fields. Creation cannot submit IDs, registration dates, spending, photos or provenance.
-- Orders and customer history are read-only. The application creates no artificial customer/order relationships.
-- Sessions are stored in `sessionStorage`, restored through `user-info`, and removed on expiry, 401 or logout. Passwords are not persisted. There is no refresh endpoint or mechanism.
-
-## Backend integration
-
-[Swagger UI](https://e-pharmacy-api-kz62.onrender.com/api-docs/) · [OpenAPI](https://e-pharmacy-api-kz62.onrender.com/api-docs/openapi.json) · [Backend repository](https://github.com/AvalianY/admin_dashboard_back)
-
-| Resource  | Supported operations                                                                              |
-| --------- | ------------------------------------------------------------------------------------------------- |
-| Session   | `POST /api/user/login`, `GET /api/user/user-info`, `GET /api/user/logout`                         |
-| Dashboard | `GET /api/dashboard`                                                                              |
-| Products  | `GET /api/products`, `POST /api/products`, `PUT /api/products/:id`, `DELETE /api/products/:id`    |
-| Suppliers | `GET /api/suppliers`, `POST /api/suppliers`, `PUT /api/suppliers/:id`                             |
-| Customers | `GET /api/customers`, `POST /api/customers`, `GET /api/customers/:id`, `PATCH /api/customers/:id` |
-| Orders    | `GET /api/orders`                                                                                 |
-
-The published specification was checked to contain all 16 operations. Production reads and authentication were verified independently. Automated domain writes are tested only against an intercepted synthetic API, never the production database. Normal manual form submission uses the configured real API.
-
-## Validation
+## Tests und Qualität
 
 ```sh
 npm run check
 npm run test:e2e
 npm audit
-npm run preview
 ```
 
-`check` runs TypeScript, ESLint, Vitest and the production build. Playwright uses installed Chrome and intercepted synthetic API responses. The regression project covers mobile, intermediate and bounded tablet layouts; `tablet-flows` repeats functional acceptance at 768×1024, including authentication, CRUD contracts, validation and error states. Dialog checks include a 440-pixel viewport height. Tests do not need production credentials. Preview serves the built application at [127.0.0.1:4173](http://127.0.0.1:4173).
+Aktuelle lokale Ergebnisse: TypeScript PASS, ESLint PASS, 39 Unit-Tests PASS, 100 Browser-Tests PASS, Production Build PASS; npm audit: 0 Sicherheitslücken. Browser-Tests prüfen Admin-/Demo-Rechte, normale Anmeldung, Session-Wiederherstellung, CRUD-Verträge mit synthetischen Antworten, Fehlerfälle, Tastaturbedienung und alle Layouts. Produktionsdaten werden durch diese Tests nicht verändert.
 
-See [asset optimization](docs/assets.md), [mobile validation](docs/mobile-validation.md), [tablet measurements](docs/tablet-design.md) and [tablet validation](docs/tablet-validation.md) for measured results and limits. Inter is distributed with its [SIL Open Font License](public/fonts/OFL.txt).
+Die freigegebenen Mobile-/Tablet-/Desktop-Layouts bleiben die Grundlage. Die endgültige Regression ist in [der Demo-Validierung](docs/demo-validation.md) dokumentiert; [Desktop-Messwerte](docs/desktop-design.md) und [Ressourcenoptimierung](docs/assets.md) bleiben separat nachvollziehbar.
 
-## Design reference
+## Deployment
 
-[E-Pharmacy Figma](https://www.figma.com/design/LR5cz3qeCp376CAmDIFu4z/Admin-dashboard--Copy-)
+Das Frontend besitzt derzeit **keine veröffentlichte Live-URL**. `npm run build` erzeugt `dist/`; `npm run preview` dient ausschließlich der lokalen Prüfung. Vor einem gesondert genehmigten Hosting-Schritt müssen HTTPS, SPA-Fallback, tatsächliches Frontend-Origin und `/api`-Weiterleitung zum Backend abgestimmt werden. Der Vite-Proxy ist keine statische Hosting-Konfiguration. CORS wird erst für das tatsächliche freigegebene Origin angepasst, niemals mit einem erfundenen Host oder `*`. Git-Publikation löst kein genehmigtes Deployment aus.
 
-The approved product filter, customer creation/editing, historical-data states and 30-day dialog extend the static mobile frames without adding unrelated functionality. Original reference assets and comparison screenshots are retained outside this repository.
+## Autor
+
+Individuelles Projekt von [AvalianY](https://github.com/AvalianY).

@@ -10,3 +10,10 @@
     max-width: 768px;
   }
 }
+@media (min-width: 1440px) {
+  .mobileShell {
+    --mobile-shell-inset: max(0px, calc((100% - 1440px) / 2));
+    max-width: 1440px;
+    min-height: 100dvh;
+  }
+}

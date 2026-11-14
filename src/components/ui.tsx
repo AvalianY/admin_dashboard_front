@@ -142,12 +142,14 @@ export function Modal({
   onDismiss,
   compact = false,
   busy = false,
+  className = "",
 }: {
   title: string;
   children: ReactNode;
   onDismiss: () => void;
   compact?: boolean;
   busy?: boolean;
+  className?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -166,7 +168,7 @@ export function Modal({
       ref={dialog}
       aria-labelledby={titleId}
       aria-busy={busy || undefined}
-      className={`${styles.modal} ${compact ? styles.compact : ""}`}
+      className={`${styles.modal} ${compact ? styles.compact : ""} ${className}`}
       onCancel={(event) => {
         event.preventDefault();
         if (!busy) onDismiss();
