@@ -4,3 +4,9 @@
   max-width: 375px;
   margin-inline: auto;
 }
+@media (min-width: 768px) {
+  .mobileShell {
+    --mobile-shell-inset: max(0px, calc((100% - 768px) / 2));
+    max-width: 768px;
+  }
+}

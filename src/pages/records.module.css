@@ -46,3 +46,52 @@
 .amount {
   white-space: nowrap;
 }
+@media (min-width: 768px) {
+  .records {
+    padding: 50px 32px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 44px auto 1fr;
+    align-content: start;
+  }
+  .records > form {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .addRow,
+  .products .addRow {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+    height: 44px;
+    align-self: center;
+    display: flex;
+    align-items: center;
+  }
+  .add {
+    width: 196px;
+    font-size: 14px;
+  }
+  .records > .tableGap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: calc(100% + 32px);
+    margin-top: 20px;
+  }
+  .records > nav {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: start;
+  }
+  .records > div:last-of-type:not(.addRow) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: end;
+  }
+  .records[data-kind="orders"] {
+    padding-bottom: 32px;
+  }
+  .records[data-kind="orders"] > div:last-of-type {
+    padding-inline: 0;
+  }
+}

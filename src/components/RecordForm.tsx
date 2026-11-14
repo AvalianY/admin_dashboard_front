@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useState, useSyncExternalStore } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../app/auth-context";
@@ -35,6 +35,13 @@ const fields = {
     ["country", "Country (optional)"],
   ],
 } as const;
+function subscribeTablet(listener: () => void) {
+  const media = window.matchMedia("(min-width: 768px)");
+  media.addEventListener("change", listener);
+  return () => media.removeEventListener("change", listener);
+}
+const tabletSnapshot = () => window.matchMedia("(min-width: 768px)").matches;
+const mobileSnapshot = () => false;
 export function RecordForm({
   kind,
   original,
@@ -49,6 +56,18 @@ export function RecordForm({
   const { session } = useAuth();
   const id = useId();
   const [conflict, setConflict] = useState(false);
+  const tablet = useSyncExternalStore(subscribeTablet, tabletSnapshot, mobileSnapshot);
+  // Keep keyboard/reading order aligned with each approved layout without duplicating the form.
+  const formFields =
+    kind === "products" && tablet
+      ? [
+          fields.products[0],
+          fields.products[1],
+          fields.products[3],
+          fields.products[2],
+          fields.products[4],
+        ]
+      : fields[kind];
   const currentCategory =
     kind === "products" ? (original as Product | undefined)?.category : undefined;
   const schema =
@@ -96,7 +115,11 @@ export function RecordForm({
     }
   });
   const title = original
-    ? "Edit data"
+    ? tablet && kind !== "customers"
+      ? kind === "products"
+        ? "Edit product"
+        : "Edit supplier"
+      : "Edit data"
     : kind === "products"
       ? "Add a new product"
       : kind === "suppliers"
@@ -110,8 +133,8 @@ export function RecordForm({
         aria-busy={isSubmitting}
         className={`${styles.form} ${original ? styles.editing : ""} ${original && kind !== "products" ? styles.supplierEdit : ""}`}
       >
-        <div className={styles.fields}>
-          {fields[kind].map(([key, label]) => {
+        <div className={`${styles.fields} ${kind === "products" ? styles.productFields : ""}`}>
+          {formFields.map(([key, label]) => {
             const fieldId = `${id}-${key}`;
             const errorId = `${fieldId}-error`;
             const error = errors[key]?.message;
@@ -127,7 +150,7 @@ export function RecordForm({
                   ? ["Active", "Deactive"]
                   : null;
             return (
-              <div key={key} className={styles.field}>
+              <div key={key} data-field={key} className={styles.field}>
                 <label htmlFor={fieldId} className="srOnly">
                   {label}
                 </label>
@@ -207,7 +230,7 @@ export function RecordForm({
         )}
         <div className={styles.actions}>
           <Button type="submit" pending={isSubmitting}>
-            {original && kind !== "suppliers" ? "Save" : "Add"}
+            {original && (tablet || kind !== "suppliers") ? "Save" : "Add"}
           </Button>
           <Button type="button" variant="secondary" disabled={isSubmitting} onClick={onDismiss}>
             Cancel

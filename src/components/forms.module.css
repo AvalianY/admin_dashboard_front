@@ -104,3 +104,38 @@
 .history ul {
   padding-left: 18px;
 }
+@media (min-width: 768px) {
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 8px;
+  }
+  .productFields {
+    grid-template-areas: "name category" "stock suppliers" "price .";
+  }
+  .productFields [data-field="name"] {
+    grid-area: name;
+  }
+  .productFields [data-field="category"] {
+    grid-area: category;
+  }
+  .productFields [data-field="stock"] {
+    grid-area: stock;
+  }
+  .productFields [data-field="suppliers"] {
+    grid-area: suppliers;
+  }
+  .productFields [data-field="price"] {
+    grid-area: price;
+  }
+  .actions {
+    width: 274px;
+  }
+  .actions > button {
+    font-size: 14px;
+  }
+  .actions > button:first-child,
+  .actions > button:last-child {
+    flex-basis: 133px;
+  }
+}

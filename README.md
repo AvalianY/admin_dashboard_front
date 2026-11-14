@@ -1,6 +1,6 @@
 # E-Pharmacy frontend
 
-Mobile administration application built from the approved E-Pharmacy Figma design and the existing backend contract. Stage 1 is fluid from 320 to 375 pixels. Above 375 pixels, one shared shell stays centered at 375 pixels with 335 pixels of content and 20-pixel gutters. This mobile composition also remains active at 768 pixels and above until Tablet is separately approved; no tablet or desktop layout is enabled.
+Mobile and tablet administration application built from the approved E-Pharmacy Figma design and the existing backend contract. Stage 1 Mobile is owner-approved and published as `3541e1d1ba03db3969e4cac90927c5ecd15b67ad`. Mobile is fluid from 320 to 375 pixels; from 376 through 767 pixels its shared shell stays centered at 375 pixels, with 335 pixels of content and 20-pixel gutters. At 768 pixels the tablet layout uses a centered 768-pixel maximum shell and 704-pixel content with 32-pixel gutters. Wider viewports retain this bounded tablet layout. Stage 2 Tablet is local for owner acceptance; Desktop is a separate stage and is not enabled.
 
 ## Run locally
 
@@ -35,7 +35,7 @@ Only `VITE_API_BASE_URL=/api` is supported. The non-secret example is in `.env.e
 - React, TypeScript, Vite, React Router and CSS Modules.
 - React Hook Form and Yup for forms; Fetch API for transport.
 - `src/app`: routing, layout and session provider.
-- `src/pages`: six mobile pages and their styles.
+- `src/pages`: six shared mobile/tablet pages and their CSS Modules.
 - `src/components`: shared controls, tables, record forms and dialogs.
 - `src/services`: API errors, validation, session persistence and explicit payload whitelists.
 - `src/hooks`: abortable reads with explicit retry.
@@ -81,9 +81,9 @@ npm audit
 npm run preview
 ```
 
-`check` runs TypeScript, ESLint, Vitest and the production build. Playwright uses installed Chrome, runs the local Vite server, intercepts API requests and covers all pages at 320/340/360/375 pixels, CRUD contracts, authentication, forms, keyboard interaction and short viewports. It does not need production credentials. Preview serves the built application at [127.0.0.1:4173](http://127.0.0.1:4173).
+`check` runs TypeScript, ESLint, Vitest and the production build. Playwright uses installed Chrome and intercepted synthetic API responses. The regression project covers mobile, intermediate and bounded tablet layouts; `tablet-flows` repeats functional acceptance at 768×1024, including authentication, CRUD contracts, validation and error states. Dialog checks include a 440-pixel viewport height. Tests do not need production credentials. Preview serves the built application at [127.0.0.1:4173](http://127.0.0.1:4173).
 
-See [asset optimization](docs/assets.md) and [mobile validation](docs/mobile-validation.md) for measured results and limits. Inter is distributed with its [SIL Open Font License](public/fonts/OFL.txt).
+See [asset optimization](docs/assets.md), [mobile validation](docs/mobile-validation.md), [tablet measurements](docs/tablet-design.md) and [tablet validation](docs/tablet-validation.md) for measured results and limits. Inter is distributed with its [SIL Open Font License](public/fonts/OFL.txt).
 
 ## Design reference
 

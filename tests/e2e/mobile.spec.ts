@@ -195,8 +195,9 @@ test("product create/edit/delete work only against intercepted synthetic API", a
   const add = page.getByRole("button", { name: "Add a new product", exact: true });
   await add.click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog).toHaveCSS("width", "335px");
-  await expect(dialog).toHaveCSS("height", "484px");
+  const tablet = (page.viewportSize()?.width ?? 375) >= 768;
+  await expect(dialog).toHaveCSS("width", tablet ? "536px" : "335px");
+  await expect(dialog).toHaveCSS("height", tablet ? "392px" : "484px");
   await dialog.getByRole("heading").click();
   await page.screenshot({ path: info.outputPath("product-add.png") });
   await dialog.getByLabel("Product Info", { exact: true }).fill("Created Product");
@@ -236,7 +237,7 @@ test("product create/edit/delete work only against intercepted synthetic API", a
   await page.goto("/dashboard");
   await expect(page.getByRole("button", { name: /All products: 60/ })).toBeVisible();
 });
-test("supplier forms, nullable EUR, original Add edit label and native date", async ({
+test("supplier forms, nullable EUR, viewport-specific edit label and native date", async ({
   page,
 }, info) => {
   const { requests } = await mockApi(page);
@@ -244,7 +245,8 @@ test("supplier forms, nullable EUR, original Add edit label and native date", as
   await page.goto("/suppliers");
   await page.getByRole("button", { name: "Add a new suppliers", exact: true }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog).toHaveCSS("height", "542px");
+  const tablet = (page.viewportSize()?.width ?? 375) >= 768;
+  await expect(dialog).toHaveCSS("height", tablet ? "392px" : "542px");
   await dialog.getByRole("heading").click();
   await page.screenshot({ path: info.outputPath("supplier-add.png") });
   await dialog.getByLabel("Suppliers Info", { exact: true }).fill("New Supplier");
@@ -264,7 +266,7 @@ test("supplier forms, nullable EUR, original Add edit label and native date", as
   await page.screenshot({ path: info.outputPath("supplier-edit.png") });
   await expect(dialog.getByLabel("Ammount", { exact: true })).toHaveValue("");
   await dialog.getByLabel("Company", { exact: true }).fill("Updated Company");
-  await dialog.getByRole("button", { name: "Add", exact: true }).click();
+  await dialog.getByRole("button", { name: tablet ? "Save" : "Add", exact: true }).click();
   await expect(dialog).toHaveCount(0);
   expect(requests.find((request) => request.method === "PUT")?.body).toMatchObject({
     amount: null,

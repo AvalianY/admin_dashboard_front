@@ -26,14 +26,17 @@ export function Login() {
         <p>E-Pharmacy</p>
       </header>
       <section className={styles.content} aria-labelledby="login-title">
-        <img
-          src="/images/pill@2x.png"
-          width={95}
-          height={93}
-          alt=""
-          fetchPriority="high"
-          className={styles.pill}
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcSet="/images/pill-tablet@2x.png" />
+          <img
+            src="/images/pill@2x.png"
+            width={95}
+            height={93}
+            alt=""
+            fetchPriority="high"
+            className={styles.pill}
+          />
+        </picture>
         <h1 id="login-title">
           Your medication, delivered Say goodbye to all <span>your healthcare </span>worries with us
         </h1>
@@ -119,13 +122,16 @@ export function Login() {
           </Button>
         </form>
       </section>
-      <img
-        src="/images/elements@2x.png"
-        width={258}
-        height={146}
-        alt=""
-        className={styles.decoration}
-      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/images/elements-tablet.png" />
+        <img
+          src="/images/elements@2x.png"
+          width={258}
+          height={146}
+          alt=""
+          className={styles.decoration}
+        />
+      </picture>
     </main>
   );
 }

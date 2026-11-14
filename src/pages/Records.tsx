@@ -207,6 +207,13 @@ export function Records({ kind }: { kind: Collection }) {
         sort: "status",
       },
     ];
+  const tabletWidths = {
+    products: [260, 150, 119, 150, 140, 141],
+    suppliers: [195, 128, 108, 157, 121, 129, 122],
+    customers: [215, 234, 148, 198, 165, 122],
+    orders: [225, 158, 131, 172, 122, 152],
+  };
+  columns = columns.map((column, index) => ({ ...column, tabletWidth: tabletWidths[kind][index] }));
   const saved = () => {
     setDialog(null);
     if (kind === "customers") setPage(1);
@@ -219,7 +226,11 @@ export function Records({ kind }: { kind: Collection }) {
         ? "Add a new suppliers"
         : "Add Customers";
   return (
-    <main id="main" className={`${styles.records} ${kind === "products" ? styles.products : ""}`}>
+    <main
+      id="main"
+      data-kind={kind}
+      className={`${styles.records} ${kind === "products" ? styles.products : ""}`}
+    >
       <FilterBar
         pending={result.loading}
         placeholder={kind === "products" ? "Product Name" : "User Name"}

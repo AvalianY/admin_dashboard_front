@@ -424,5 +424,41 @@
     "rasterPairs": 5,
     "rasterDifferentDecodedPixels": 0,
     "originalFilesUnchanged": true
-  }
+  },
+  "tabletResources": [
+    {
+      "name": "header-logo-tablet@2x.png",
+      "sourceWidth": 300,
+      "sourceHeight": 300,
+      "width": 80,
+      "height": 80,
+      "before": 5718,
+      "after": 5055,
+      "savingPercent": 11.594963273871983,
+      "method": "Downsample existing original; lossless IDAT recompression",
+      "quality": "Decoded RGBA identical before and after IDAT compression; original Figma visual reference checked at CSS display size"
+    },
+    {
+      "name": "pill-tablet@2x.png",
+      "sourceWidth": 466,
+      "sourceHeight": 456,
+      "width": 358,
+      "height": 350,
+      "before": 143237,
+      "after": 91522,
+      "savingPercent": 36.1044981394472,
+      "method": "Downsample existing original; lossless IDAT recompression",
+      "quality": "Decoded RGBA identical before and after IDAT compression; original Figma visual reference checked at CSS display size"
+    },
+    {
+      "name": "elements-tablet.png",
+      "width": 465,
+      "height": 346,
+      "before": 7781,
+      "after": 7603,
+      "savingPercent": 2.2876236987533716,
+      "method": "Original provided PNG; lossless IDAT recompression; CSS opacity matches Figma",
+      "quality": "Decoded RGBA identical before and after IDAT compression; original Figma visual reference checked at CSS display size"
+    }
+  ]
 }

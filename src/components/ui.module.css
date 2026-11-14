@@ -256,6 +256,50 @@
   height: 24px;
   object-fit: cover;
 }
+@media (min-width: 768px) {
+  .modal {
+    max-width: 536px;
+    padding: 40px;
+  }
+  .modal h2 {
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 40px;
+  }
+  .compact {
+    max-width: 536px;
+    padding: 20px;
+  }
+  .compact h2 {
+    margin-bottom: 20px;
+  }
+  .options {
+    top: 52px;
+  }
+  .filter {
+    width: 354px;
+    gap: 14px;
+  }
+  .filter .button {
+    width: 116px;
+    font-size: 14px;
+  }
+  .filter input {
+    box-shadow: 0 -1px 5px rgb(71 71 71 / 5%);
+  }
+  .avatar,
+  .avatar img {
+    width: 36px;
+    height: 36px;
+  }
+  .pagination {
+    gap: 8px;
+  }
+  .pagination button {
+    width: 19.002px;
+    height: 19.002px;
+  }
+}
 .productAvatar {
   border-radius: 0;
   background: transparent;
@@ -289,4 +333,13 @@
 .blue {
   color: #70a6e8;
   background: rgb(112 166 232 / 10%);
+}
+@media (min-width: 768px) {
+  .badge {
+    font-size: 14px;
+    letter-spacing: -0.7px;
+    min-width: 92px;
+    text-align: center;
+    padding-inline: 12px;
+  }
 }

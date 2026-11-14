@@ -115,13 +115,16 @@ export function Layout() {
         >
           <Icon name="menu-burger" />
         </button>
-        <img
-          src="/images/header-logo@2x.png"
-          width={32}
-          height={32}
-          alt="E-Pharmacy"
-          className={styles.logo}
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcSet="/images/header-logo-tablet@2x.png" />
+          <img
+            src="/images/header-logo@2x.png"
+            width={32}
+            height={32}
+            alt="E-Pharmacy"
+            className={styles.logo}
+          />
+        </picture>
         <div className={styles.heading}>
           <h1>Medicine store</h1>
           <p>

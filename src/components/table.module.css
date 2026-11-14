@@ -12,6 +12,7 @@
   display: none;
 }
 .panel {
+  width: var(--table-width);
   outline: 1px solid var(--border);
   outline-offset: -1px;
   background: white;
@@ -35,6 +36,9 @@
   table-layout: fixed;
   width: 100%;
   text-align: left;
+}
+.table col {
+  width: var(--column-width);
 }
 .table th {
   height: 42px;
@@ -185,4 +189,64 @@
 }
 .edit:hover {
   background: var(--panel-head);
+}
+@media (min-width: 768px) {
+  .panel {
+    width: var(--tablet-table-width);
+    min-height: 502px;
+  }
+  .table col {
+    width: var(--tablet-column-width);
+  }
+  .panel h2 {
+    height: 64px;
+    padding-inline: 20px;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .table th {
+    height: 58px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .table td {
+    height: 76px;
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .table th,
+  .table td {
+    padding-inline: 20px;
+  }
+  .table tbody tr::after {
+    left: 20px;
+    right: 20px;
+  }
+  .person {
+    flex-direction: row;
+    align-items: center;
+  }
+  .roundAction {
+    width: 32px;
+    height: 32px;
+  }
+  .edit {
+    padding: 8px 17px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .scrollFooter {
+    padding-inline: 8px;
+  }
+  .scrollbar,
+  .scrollbar::-webkit-slider-thumb {
+    height: 10px;
+  }
+  .scrollbar::-webkit-slider-thumb {
+    width: calc(100% * 252 / 688);
+  }
+  .scrollbar::-moz-range-thumb {
+    width: calc(100% * 252 / 688);
+    height: 10px;
+  }
 }

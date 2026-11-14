@@ -36,6 +36,9 @@
   line-height: 20px;
   font-weight: 600;
 }
+.tabletStatIcon {
+  display: none;
+}
 .recent {
   margin-top: 20px;
   display: flex;
@@ -148,4 +151,80 @@
   font-size: 28px;
   line-height: 34px;
   font-weight: 600;
+}
+@media (min-width: 768px) {
+  .dashboard {
+    padding: 20px 32px 40px;
+  }
+  .stats {
+    grid-template-columns: 221fr 221fr 222fr;
+  }
+  .stat {
+    height: 108px;
+    padding: 14px 18px;
+    gap: 28px;
+  }
+  .statLabel {
+    align-items: center;
+    line-height: 18px;
+    min-height: 20px;
+  }
+  .statLabel > span:first-child {
+    transform: scale(calc(20 / 18));
+    margin: 1px;
+  }
+  .mobileStatIcon {
+    display: none;
+  }
+  .tabletStatIcon {
+    display: inline-flex;
+  }
+  .stat strong {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .recent {
+    margin-top: 40px;
+  }
+  .recent section > div > div {
+    min-height: 512px;
+  }
+  .recent th:not(:first-child),
+  .recent td:not(:first-child) {
+    padding-left: 20px;
+  }
+  .recent > div:last-child {
+    display: none;
+  }
+  .finance {
+    margin-top: 20px;
+    min-height: 512px;
+  }
+  .finance h2 {
+    height: 63px;
+    padding-inline: 19px;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .financeBody {
+    padding-inline: 19px;
+  }
+  .today {
+    padding: 19px 0;
+  }
+  .transactions {
+    max-height: 390px;
+  }
+  .transactions li {
+    min-height: 65px;
+    gap: 40px;
+    padding: 19px 0;
+    align-items: center;
+    font-size: 16px;
+  }
+  .transactionType {
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: -0.7px;
+  }
 }

@@ -95,6 +95,11 @@ img {
 .skipLink:focus {
   top: 8px;
 }
+@media (min-width: 768px) {
+  .skipLink {
+    left: calc(var(--mobile-shell-inset, 0px) + 32px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

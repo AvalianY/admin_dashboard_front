@@ -18,6 +18,7 @@ const columns: Column<Customer>[] = [
     key: "name",
     title: "Name",
     width: 105,
+    tabletWidth: 255,
     render: (row) => (
       <span className={table.person}>
         <Avatar name={row.name} photo={row.photo} />
@@ -25,8 +26,14 @@ const columns: Column<Customer>[] = [
       </span>
     ),
   },
-  { key: "email", title: "Email", width: 151, render: (row) => row.email },
-  { key: "spent", title: "Spent", width: 79, render: (row) => formatAmount(row.spent) },
+  { key: "email", title: "Email", width: 151, tabletWidth: 279, render: (row) => row.email },
+  {
+    key: "spent",
+    title: "Spent",
+    width: 79,
+    tabletWidth: 170,
+    render: (row) => formatAmount(row.spent),
+  },
 ];
 export function Dashboard() {
   const result = useResource<DashboardData>("/dashboard");
@@ -45,7 +52,18 @@ export function Dashboard() {
             onClick={() => setMetric(counter.key)}
           >
             <span className={styles.statLabel}>
-              <Icon name={counter.icon} size={18} />
+              {counter.key === "suppliers" ? (
+                <>
+                  <span className={styles.mobileStatIcon}>
+                    <Icon name={counter.icon} size={18} />
+                  </span>
+                  <span className={styles.tabletStatIcon}>
+                    <Icon name="customers-stat" size={20} />
+                  </span>
+                </>
+              ) : (
+                <Icon name={counter.icon} size={18} />
+              )}
               <span>{counter.label}</span>
             </span>
             <strong>{data ? data.totals[counter.key].toLocaleString("en") : unknown}</strong>

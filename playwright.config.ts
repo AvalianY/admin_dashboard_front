@@ -13,6 +13,15 @@ export default defineConfig({
     deviceScaleFactor: 1,
     trace: "retain-on-failure",
   },
+  projects: [
+    { name: "regression" },
+    {
+      name: "tablet-flows",
+      testMatch: /mobile\.spec\.ts/,
+      grepInvert: /all six mobile pages fit/,
+      use: { viewport: { width: 768, height: 1024 } },
+    },
+  ],
   webServer: {
     command: "npm run dev",
     url: "http://127.0.0.1:5173",

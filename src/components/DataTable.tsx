@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Loader, Notice } from "./ui";
 import styles from "./table.module.css";
 
@@ -6,6 +6,7 @@ export interface Column<T> {
   key: string;
   title: string;
   width: number;
+  tabletWidth?: number;
   render: (row: T) => ReactNode;
   sort?: string;
 }
@@ -38,6 +39,10 @@ export function DataTable<T extends { id: string }>({
   const [position, setPosition] = useState(0);
   const [scrollable, setScrollable] = useState(false);
   const width = columns.reduce((total, column) => total + column.width, 0);
+  const tabletWidth = columns.reduce(
+    (total, column) => total + (column.tabletWidth ?? column.width),
+    0,
+  );
   useEffect(() => {
     const element = viewport.current;
     if (!element) return;
@@ -61,12 +66,28 @@ export function DataTable<T extends { id: string }>({
             setPosition(range > 0 ? Math.round((element.scrollLeft / range) * 1000) : 0);
           }}
         >
-          <div className={styles.panel} style={{ width }}>
+          <div
+            className={styles.panel}
+            style={
+              {
+                "--table-width": `${width}px`,
+                "--tablet-table-width": `${tabletWidth}px`,
+              } as CSSProperties
+            }
+          >
             <h2>{title}</h2>
             <table className={styles.table}>
               <colgroup>
                 {columns.map((column) => (
-                  <col key={column.key} style={{ width: column.width }} />
+                  <col
+                    key={column.key}
+                    style={
+                      {
+                        "--column-width": `${column.width}px`,
+                        "--tablet-column-width": `${column.tabletWidth ?? column.width}px`,
+                      } as CSSProperties
+                    }
+                  />
                 ))}
               </colgroup>
               <thead>

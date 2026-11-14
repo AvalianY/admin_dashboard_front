@@ -1,5 +1,7 @@
 # Mobile validation — Stage 1
 
+Stage 1 was subsequently accepted by the owner and published in commit `3541e1d1ba03db3969e4cac90927c5ecd15b67ad`. The measurements below document that accepted Mobile baseline. Stage 2 enables a separate bounded tablet layout from 768px; see [tablet validation](tablet-validation.md) for subsequent regression results.
+
 Date: 14 November 2026. Scope: mobile only, fluid at 320–375 CSS pixels and centered at a maximum of 375 pixels above that range, including 768 pixels and wider until Tablet is separately implemented. No Git staging, commit, push or deployment is part of this stage.
 
 ## Automated validation
@@ -53,23 +55,23 @@ Expected differences from static example screenshots:
 
 The built application was tested through its local preview proxy; direct HTTPS GETs independently checked the public server. Credentials were read from the existing Windows Credential Manager entry, used only in memory and never written into this repository or reports.
 
-| Check                                                 | Result                                       |
-| ----------------------------------------------------- | -------------------------------------------- |
-| Root HTTPS response                                   | 404, expected                                |
-| Published OpenAPI                                     | 16 operations, including customer POST       |
-| Login from production build                           | 200                                          |
-| `user-info`, Dashboard and all four lists             | 200                                          |
-| Customer details/history endpoint                     | 200                                          |
-| Products / Suppliers / Customers / Orders             | 60 / 5 / 88 / 25                             |
-| Dashboard totals                                      | 60 / 5 / 88                                  |
-| Recent customers                                      | 5                                            |
-| Last 30 days                                          | API: null / null / 0; current approved display: 0 / 0 / 0      |
-| Today's financial records                             | unavailable, preserved as unknown            |
-| UTC 30-day interval returned on the verification date | 2026-10-16 inclusive to 2026-11-15 exclusive |
-| All four built list pages                             | 5 visible rows each, no page overflow        |
-| Built session restoration                             | PASS                                         |
-| Logout and subsequent old-token `user-info`           | local session removed; server returns 401    |
-| Production domain writes                              | 0                                            |
+| Check                                                 | Result                                                    |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| Root HTTPS response                                   | 404, expected                                             |
+| Published OpenAPI                                     | 16 operations, including customer POST                    |
+| Login from production build                           | 200                                                       |
+| `user-info`, Dashboard and all four lists             | 200                                                       |
+| Customer details/history endpoint                     | 200                                                       |
+| Products / Suppliers / Customers / Orders             | 60 / 5 / 88 / 25                                          |
+| Dashboard totals                                      | 60 / 5 / 88                                               |
+| Recent customers                                      | 5                                                         |
+| Last 30 days                                          | API: null / null / 0; current approved display: 0 / 0 / 0 |
+| Today's financial records                             | unavailable, preserved as unknown                         |
+| UTC 30-day interval returned on the verification date | 2026-10-16 inclusive to 2026-11-15 exclusive              |
+| All four built list pages                             | 5 visible rows each, no page overflow                     |
+| Built session restoration                             | PASS                                                      |
+| Logout and subsequent old-token `user-info`           | local session removed; server returns 401                 |
+| Production domain writes                              | 0                                                         |
 
 The read-only run completed with 22 checks passing, zero blocked/forbidden requests and zero application console errors/warnings. Temporary verification sessions were revoked, including cleanup after interrupted verification attempts. No account credentials were changed. Current counts match the approved baseline; a frontend GET cannot independently attest the Atlas database name or BSON identity.
 
@@ -98,19 +100,19 @@ One shared CSS Modules shell now caps the composition at 375 pixels. Existing pa
 Measured for all six pages:
 
 | Viewport | Composition | Content | Outer left space |
-| ---: | ---: | ---: | ---: |
-| 320 | 320 | 280 | 0 |
-| 340 | 340 | 300 | 0 |
-| 360 | 360 | 320 | 0 |
-| 375 | 375 | 335 | 0 |
-| 376 | 375 | 335 | 0.5 |
-| 390 | 375 | 335 | 7.5 |
-| 425 | 375 | 335 | 25 |
-| 500 | 375 | 335 | 62.5 |
-| 600 | 375 | 335 | 112.5 |
-| 767 | 375 | 335 | 196 |
-| 768 | 375 | 335 | 196.5 |
-| 1440 | 375 | 335 | 532.5 |
+| -------: | ----------: | ------: | ---------------: |
+|      320 |         320 |     280 |                0 |
+|      340 |         340 |     300 |                0 |
+|      360 |         360 |     320 |                0 |
+|      375 |         375 |     335 |                0 |
+|      376 |         375 |     335 |              0.5 |
+|      390 |         375 |     335 |              7.5 |
+|      425 |         375 |     335 |               25 |
+|      500 |         375 |     335 |             62.5 |
+|      600 |         375 |     335 |            112.5 |
+|      767 |         375 |     335 |              196 |
+|      768 |         375 |     335 |            196.5 |
+|     1440 |         375 |     335 |            532.5 |
 
 All eleven 375-pixel screenshots were repeated against the original Figma references and the previous accepted implementation. Before/after screenshots are pixel-identical. All eleven states were additionally captured at 320 and 425 pixels. Cropped 425-pixel captures preserve the 375-pixel composition; minor rasterization channel differences are at most 3/255, with unchanged DOM dimensions.
 
