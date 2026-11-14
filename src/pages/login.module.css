@@ -1,0 +1,71 @@
+.login {
+  min-height: max(812px, 100dvh);
+  position: relative;
+  padding: 24px 20px 80px;
+  isolation: isolate;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand p {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+}
+.content {
+  position: relative;
+  padding-top: 148px;
+}
+.content h1 {
+  position: relative;
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+}
+.content h1 span {
+  color: var(--accent);
+}
+.pill {
+  position: absolute;
+  top: 92px;
+  right: 20px;
+  object-fit: contain;
+}
+.form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.password {
+  position: relative;
+}
+.password input {
+  padding-right: 48px;
+}
+.password button {
+  position: absolute;
+  right: 18px;
+  top: 13px;
+  display: flex;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: transparent;
+}
+.form .submit {
+  margin-top: 26px;
+  width: 100%;
+}
+.decoration {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 258px;
+  height: 146px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: -1;
+}

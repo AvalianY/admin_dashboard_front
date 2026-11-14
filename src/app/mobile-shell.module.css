@@ -1,0 +1,6 @@
+.mobileShell {
+  --mobile-shell-inset: max(0px, calc((100% - 375px) / 2));
+  width: 100%;
+  max-width: 375px;
+  margin-inline: auto;
+}

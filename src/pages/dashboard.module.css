@@ -1,0 +1,151 @@
+.dashboard {
+  padding: 20px 20px 80px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: minmax(0, 158fr) minmax(0, 157fr);
+  gap: 20px;
+}
+.stat {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  padding: 14px;
+  height: 98px;
+  text-align: left;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.stat:first-child {
+  border-color: var(--accent);
+}
+.stat:hover {
+  border-color: var(--accent);
+}
+.statLabel {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--muted);
+}
+.stat strong {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.recent {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.recent > div:last-child {
+  padding-top: 20px;
+}
+.recent th:not(:first-child),
+.recent td:not(:first-child) {
+  padding-left: 10px;
+}
+.finance {
+  margin-top: 40px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-height: 511px;
+  overflow: hidden;
+}
+.finance h2 {
+  height: 46px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  background: var(--panel-head);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.financeBody {
+  padding: 0 12px;
+}
+.today {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--muted);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.transactions {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-height: 416px;
+  overflow-y: auto;
+}
+.transactions li {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr) auto;
+  gap: 28px;
+  padding: 14px 0;
+  box-shadow: 0 1px 0 var(--border);
+  align-items: start;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+.transactions li:last-child {
+  box-shadow: none;
+}
+.transactionType {
+  width: 80px;
+  padding: 4px;
+  border-radius: 40px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: -0.6px;
+}
+.transactions p {
+  overflow-wrap: anywhere;
+}
+.amount {
+  align-self: center;
+  white-space: nowrap;
+}
+.Income .transactionType {
+  background: rgb(89 177 122 / 10%);
+  color: var(--accent);
+}
+.Income .amount {
+  color: var(--accent);
+}
+.Expense .transactionType {
+  background: rgb(232 80 80 / 10%);
+  color: var(--error);
+}
+.Expense .amount {
+  color: var(--error);
+}
+.Error .transactionType {
+  background: rgb(29 30 33 / 10%);
+}
+.Error .amount {
+  text-decoration: line-through;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.metric h3 {
+  font-size: 16px;
+  line-height: 20px;
+}
+.metric strong {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+}

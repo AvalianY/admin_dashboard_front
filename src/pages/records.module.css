@@ -1,0 +1,48 @@
+.records {
+  padding: 40px 20px 20px;
+  min-height: calc(100dvh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+.addRow {
+  margin-top: 16px;
+  height: 44px;
+}
+.products .addRow {
+  margin-top: 18px;
+  height: 42px;
+}
+.add {
+  width: 177px;
+}
+.addProduct {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+.addProduct > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: var(--accent);
+  border-radius: 60px;
+}
+.addProduct:hover > span {
+  background: var(--accent-hover);
+}
+.tableGap {
+  margin-top: 20px;
+}
+.records > .tableGap {
+  width: calc(100% + 20px);
+}
+.amount {
+  white-space: nowrap;
+}

@@ -1,0 +1,106 @@
+@font-face {
+  font-family: Inter;
+  src: url("/fonts/inter.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  font-family: Inter, sans-serif;
+  font-optical-sizing: none;
+  color: #1d1e21;
+  background: #f7f8fa;
+  font-synthesis: none;
+  --ink: #1d1e21;
+  --muted: rgb(29 30 33 / 40%);
+  --border: rgb(29 30 33 / 10%);
+  --accent: #59b17a;
+  --accent-hover: #3f945f;
+  --error: #e85050;
+  --panel-head: #e7f1ed;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+button,
+input,
+select {
+  min-width: 0;
+}
+a {
+  color: inherit;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+button {
+  border: 0;
+}
+img {
+  display: block;
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.skipLink {
+  position: fixed;
+  z-index: 100;
+  left: calc(var(--mobile-shell-inset, 0px) + 20px);
+  top: -80px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+}
+.skipLink:focus {
+  top: 8px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

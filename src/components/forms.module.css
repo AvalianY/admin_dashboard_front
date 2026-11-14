@@ -1,0 +1,106 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.field {
+  min-width: 0;
+}
+.field > p {
+  margin-top: 4px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 40px;
+}
+.actions > button {
+  flex: 1;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.actions > button:first-child {
+  flex-basis: 146px;
+}
+.actions > button:last-child {
+  flex-basis: 140px;
+}
+.serverError {
+  margin-top: 14px;
+  overflow-wrap: anywhere;
+}
+.editing input,
+.editing [role="combobox"] {
+  border-color: rgb(89 177 122 / 40%);
+  color: rgb(29 30 33 / 80%);
+}
+.editing input[name="price"] {
+  color: var(--ink);
+}
+.supplierEdit input,
+.supplierEdit [role="combobox"] {
+  border-color: rgb(89 177 122 / 50%);
+}
+.date {
+  position: relative;
+}
+.date > span {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  pointer-events: none;
+}
+.date input {
+  position: relative;
+  padding-right: 42px;
+}
+.date input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 18px;
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  cursor: pointer;
+}
+.copy {
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.details {
+  font-size: 12px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+.details dl {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px 12px;
+  margin: 0;
+}
+.details dt {
+  color: var(--muted);
+}
+.details dd {
+  margin: 0;
+}
+.details h3 {
+  font-size: 16px;
+  line-height: 20px;
+  margin: 24px 0 14px;
+}
+.history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.history > li {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+}
+.history p + p {
+  margin-top: 6px;
+}
+.history ul {
+  padding-left: 18px;
+}
