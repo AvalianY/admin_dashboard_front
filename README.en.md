@@ -180,7 +180,9 @@ Approved Mobile/Tablet/Desktop layouts remain the baseline. Final regression is 
 
 ## Deployment
 
-The frontend currently has **no published live URL**. `npm run build` produces `dist/`; `npm run preview` is for local verification only. Before separately authorized hosting, agree HTTPS, SPA fallback, the actual frontend origin and `/api` forwarding to the backend. The Vite proxy is not static-hosting configuration. Configure CORS only for the actual approved origin, without invented addresses or `*`. Git publication is not deployment authorization.
+The frontend currently has **no confirmed public URL**. Production configuration is prepared in [vercel.json](vercel.json): HTTPS `/api` forwarding to the existing Render backend, React Router SPA fallback and disabled API caching. The caller's Bearer Authorization is forwarded; no secret is embedded in the frontend. The approved design is unchanged.
+
+The owner deploys manually: Vercel **Vite**, Node.js **26.x**, repository root `./`, install `npm ci`, build `npm run build`, output `dist`. No environment variable is required; optional public `VITE_API_BASE_URL=/api`. Never copy backend secrets into frontend variables. Follow the [deployment and verification guide](docs/production-deployment.md). Any required backend CORS adjustment uses only the actual confirmed production origin, without guessed domains or `*`. Live proxy/authentication checks and Demo User activation follow the owner's deployment; they are not claimed complete by Git publication.
 
 ## Author
 

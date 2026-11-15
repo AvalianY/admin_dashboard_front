@@ -180,7 +180,9 @@ Die freigegebenen Mobile-/Tablet-/Desktop-Layouts bleiben die Grundlage. Die end
 
 ## Deployment
 
-Das Frontend besitzt derzeit **keine veröffentlichte Live-URL**. `npm run build` erzeugt `dist/`; `npm run preview` dient ausschließlich der lokalen Prüfung. Vor einem gesondert genehmigten Hosting-Schritt müssen HTTPS, SPA-Fallback, tatsächliches Frontend-Origin und `/api`-Weiterleitung zum Backend abgestimmt werden. Der Vite-Proxy ist keine statische Hosting-Konfiguration. CORS wird erst für das tatsächliche freigegebene Origin angepasst, niemals mit einem erfundenen Host oder `*`. Git-Publikation löst kein genehmigtes Deployment aus.
+Das Frontend besitzt derzeit **keine bestätigte öffentliche URL**. Die Produktionskonfiguration steht in [vercel.json](vercel.json) bereit: HTTPS-Weiterleitung von `/api` zum bestehenden Render-Backend, SPA-Fallback für React Router und deaktiviertes API-Caching. Der Bearer-Authorization-Header des Aufrufers wird weitergeleitet; das Frontend enthält kein eingebettetes Geheimnis. Das freigegebene Design bleibt unverändert.
+
+Der Eigentümer deployt manuell: Vercel **Vite**, Node.js **26.x**, Repository-Stamm `./`, Installation `npm ci`, Build `npm run build`, Ausgabe `dist`. Keine Umgebungsvariable ist erforderlich; optional öffentlich `VITE_API_BASE_URL=/api`. Backend-Geheimnisse dürfen nicht in Frontend-Variablen kopiert werden. Siehe [Deployment- und Prüfungsanleitung](docs/production-deployment.md). Eine erforderliche Backend-CORS-Anpassung verwendet ausschließlich das tatsächlich bestätigte Produktions-Origin, ohne erfundene Domains oder `*`. Live-Prüfungen von Proxy und Anmeldung sowie die Aktivierung des Demo User folgen erst nach dem Deployment durch den Eigentümer; eine Git-Veröffentlichung bestätigt deren Abschluss nicht.
 
 ## Autor
 

@@ -35,6 +35,7 @@ describe("API boundary", () => {
         },
         body: '{"name":"Example"}',
         credentials: "omit",
+        cache: "no-store",
       }),
     );
   });
