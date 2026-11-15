@@ -15,8 +15,22 @@
 
 </div>
 
+## Live Demo
+
+**Live Application:** [E-Pharmacy](https://admin-dashboard-front-blush.vercel.app/)
+
+| Поле | Значення |
+| --- | --- |
+| Demo Email | `demo@e-pharmacy.example` |
+| Demo Password | `6800gJ8TaoEeM-ykTaehM4MWqY47ikFQX8gDiQPeFjg` |
+| Role | `demo` |
+| Access | Read-only |
+
+Публічний демонстраційний доступ до погодженого навчального набору. Користувач може лише переглядати дані; створення, редагування та видалення блокує сервер. Наведені вище дані належать виключно demo-користувачу.
+
 ## Зміст
 
+- [Live Demo](#live-demo)
 - [Про проєкт](#про-проєкт)
 - [Можливості](#можливості)
 - [Адаптивний дизайн](#адаптивний-дизайн)
@@ -128,13 +142,13 @@ tests/            # Unit and browser tests
 
 ## Демонстраційний доступ
 
-Роль `demo` використовує той самий Login і механізм сесій, що й `admin`. Доступні Dashboard, списки, пошук, фільтри, сортування, пагінація, деталі/історія клієнтів і Logout. Add/Edit/Delete вимкнені. Усі сім операцій зміни бізнес-даних додатково блокуються backend із `403 DEMO_READ_ONLY`; відмова CORS має інший код.
+Публічний demo-доступ активовано. Використовуйте дані з блоку [Live Demo](#live-demo) у звичайній формі входу. Серверна роль `demo` дозволяє Dashboard, списки, пошук, фільтри, сортування, пагінацію, деталі клієнта та підтверджену історію. Add/Edit/Delete вимкнені; усі сім операцій зміни бізнес-даних додатково блокуються сервером із `403 DEMO_READ_ONLY`. Окремого механізму чи кнопки Demo Login немає.
 
-**Публічний demo-доступ ще не активовано.** Потрібні окреме розгортання й перевірка захищеного сервера, після яких можна безпечно ініціалізувати обліковий запис. Demo-пароль не постачається та не публікується. Дивіться [інструкцію demo](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/demo-access.md).
+Live-перевірка охоплює справжній вхід через Vercel, відновлення сесії, Logout та всі шість сторінок на Mobile, Tablet і Desktop. Публічний пароль призначений лише для цього обмеженого користувача. [Production-перевірка](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/production-activation.md).
 
 ## Встановлення та запуск
 
-Потрібні Node.js 26.13.x (межа пакета >=26 <27), npm і Google Chrome для браузерних тестів. У репозиторії немає пароля. Для реального локального входу потрібні дозволені облікові дані налаштованого backend.
+Потрібні Node.js 26.13.x (межа пакета >=26 <27), npm і Google Chrome для браузерних тестів. Дані публічного demo-користувача наведені вище; адміністративна розробка потребує власних дозволених облікових даних.
 
 ```sh
 git clone https://github.com/AvalianY/admin_dashboard_front.git
@@ -178,11 +192,13 @@ npm audit
 
 Затверджені Mobile/Tablet/Desktop залишаються основою. Підсумкова регресія описана в [перевірці demo](docs/demo-validation.md); [Desktop-виміри](docs/desktop-design.md) та [оптимізація ресурсів](docs/assets.md) доступні окремо.
 
+**Production-перевірка 15.11.2026:** вхід admin/demo, всі дозволені GET, Vercel proxy/Bearer/no-store, сім безпечних перевірок `403 DEMO_READ_ONLY`, захист ролі від JWT/заголовків/query/frontend, сесії/Logout та справжній інтерфейс на Mobile/Tablet/Desktop — PASS. Усі 190 оригінальних документів залишилися BSON-ідентичними. Справжні адміністративні операції запису в production не виконувалися. [Обсяг перевірки](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/production-activation.md).
+
 ## Розгортання
 
-Frontend поки **не має підтвердженої публічної адреси**. Production-конфігурацію підготовлено у [vercel.json](vercel.json): HTTPS-пересилання `/api` до наявного Render backend, SPA fallback для React Router і вимкнене кешування API. Bearer Authorization користувача передається далі; frontend не містить вбудованих секретів. Затверджений дизайн не змінено.
+[Live-застосунок](https://admin-dashboard-front-blush.vercel.app/) працює на Vercel Free, наявний API — на Render Free. [vercel.json](vercel.json) забезпечує HTTPS-пересилання `/api`, SPA fallback для React Router, збереження Bearer Authorization і вимкнене кешування API. Вхід, прямі переходи, перезавантаження, сесії та Logout перевірені зі справжнім API. Затверджений дизайн не змінено.
 
-Власник розгортає застосунок вручну: Vercel **Vite**, Node.js **26.x**, корінь репозиторію `./`, встановлення `npm ci`, збірка `npm run build`, результат `dist`. Змінні оточення не обов'язкові; необов'язкова публічна `VITE_API_BASE_URL=/api`. Секрети backend не можна копіювати у frontend-змінні. Дивіться [інструкцію розгортання та перевірки](docs/production-deployment.md). За потреби CORS backend коригується лише для фактичного підтвердженого production-origin, без вигаданих доменів або `*`. Live-перевірки proxy й авторизації та активація Demo User виконуються після deployment власником; публікація Git не означає їх завершення.
+Власник розгортає застосунок вручну: Vite, Node.js 26.x, корінь репозиторію `./`, встановлення `npm ci`, збірка `npm run build`, результат `dist`. Змінні оточення не обов’язкові; необов’язкова публічна `VITE_API_BASE_URL=/api`. Секрети backend не переносяться у frontend-змінні. Render дозволяє підтверджений frontend-origin `https://admin-dashboard-front-blush.vercel.app` поряд з API-origin для Swagger. Git Auto-Deploy залишається вимкненим. [Інструкція deployment](docs/production-deployment.md).
 
 ## Автор
 

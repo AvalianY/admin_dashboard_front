@@ -1,6 +1,8 @@
 # Manual production deployment
 
-The owner deploys both applications. Publishing Git commits does not deploy them. Keep automatic deployments disabled during this controlled rollout. The frontend has no confirmed public URL yet; public demo access remains inactive until the deployed server protection has passed live checks.
+The owner deploys both applications. Production activation passed on 15 November 2026 at [the live application](https://admin-dashboard-front-blush.vercel.app/), backed by the existing Render API. Both admin and demo passed actual browser Login, all six pages at 375/768/1440 px, session restoration and Logout. All seven demo mutations return `403 DEMO_READ_ONLY`; the original 190 domain documents remain BSON-identical. See the [production verification record](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/production-activation.md).
+
+Publishing Git commits does not deploy them. Keep automatic deployments disabled. The owner applied the exact frontend origin `https://admin-dashboard-front-blush.vercel.app` to Render CORS without removing the API origin used by Swagger. Public demo credentials are intentionally published only in the approved README Live Demo blocks after all security gates; the application bundle and hosting variables contain no credentials. The procedure below remains the controlled process for future manual releases.
 
 ## Versions and order
 
@@ -51,4 +53,4 @@ After the owner deploys: verify the exact deployed revisions, HTTPS, Login, sess
 - [Git deployment controls](https://vercel.com/docs/project-configuration/git-configuration)
 - [Manual deployments by Git reference](https://vercel.com/changelog/manually-create-deployments-by-commit-or-branch-in-the-dashboard)
 
-These settings prepare a manual deployment; they do not claim that a live frontend or a public demo account already exists.
+The first manual deployment and demo activation are complete. Future releases still require the owner's manual deployment and verification; never rerun seed or reset an existing account as a deployment step.

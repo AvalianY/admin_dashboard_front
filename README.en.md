@@ -15,8 +15,22 @@
 
 </div>
 
+## Live Demo
+
+**Live Application:** [E-Pharmacy](https://admin-dashboard-front-blush.vercel.app/)
+
+| Field | Value |
+| --- | --- |
+| Demo Email | `demo@e-pharmacy.example` |
+| Demo Password | `6800gJ8TaoEeM-ykTaehM4MWqY47ikFQX8gDiQPeFjg` |
+| Role | `demo` |
+| Access | Read-only |
+
+Public demo access to the approved educational dataset. This account can only read data; the server blocks creation, editing and deletion. The credentials above belong exclusively to the demo account.
+
 ## Table of Contents
 
+- [Live Demo](#live-demo)
 - [About the Project](#about-the-project)
 - [Features](#features)
 - [Responsive Design](#responsive-design)
@@ -128,13 +142,13 @@ Money remains an exact decimal string. There is no BDT/EUR conversion, invented 
 
 ## Demo Access
 
-The `demo` role uses the same Login and session mechanism as `admin`. It can access Dashboard, lists, search, filters, sorting, pagination, customer details/history and Logout. Add/Edit/Delete controls are disabled. The backend also denies all seven business mutations with `403 DEMO_READ_ONLY`; rejected CORS origins have a different error code.
+Public demo access is active. Use the credentials in [Live Demo](#live-demo) with the normal Login form. The server-owned `demo` role allows Dashboard, lists, search, filters, sorting, pagination, customer details and confirmed history. Add/Edit/Delete controls are disabled; the backend also rejects all seven business mutations with `403 DEMO_READ_ONLY`. No separate authentication mechanism or Demo Login button is added.
 
-**Public demo access is not active yet.** The protected server must be separately deployed and verified before secure account initialization. No demo password is shipped or published. See the [demo runbook](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/demo-access.md).
+Live checks cover actual Vercel Login, session restoration, Logout and all six pages on Mobile, Tablet and Desktop. The public password belongs only to this restricted account. [Production verification](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/production-activation.md).
 
 ## Installation
 
-Requirements: Node.js 26.13.x (package range >=26 <27), npm and Google Chrome for browser tests. No password is included. Actual local login requires authorized credentials for the configured backend.
+Requirements: Node.js 26.13.x (package range >=26 <27), npm and Google Chrome for browser tests. Public demo credentials are provided above; administrative development requires your own authorized credentials.
 
 ```sh
 git clone https://github.com/AvalianY/admin_dashboard_front.git
@@ -178,11 +192,13 @@ Current local results: TypeScript PASS, ESLint PASS, 39 unit tests PASS, 100 bro
 
 Approved Mobile/Tablet/Desktop layouts remain the baseline. Final regression is documented in [demo validation](docs/demo-validation.md); [Desktop measurements](docs/desktop-design.md) and [asset optimization](docs/assets.md) remain separately available.
 
+**Production verification, 15 November 2026:** admin/demo Login, every allowed GET, Vercel proxy/Bearer/no-store, seven safe `403 DEMO_READ_ONLY` probes, JWT/header/query/frontend role defenses, sessions/Logout and the real UI on Mobile/Tablet/Desktop — PASS. All 190 original documents remain BSON-identical. No valid administrative production mutations were performed in this activation. [Verification scope](https://github.com/AvalianY/admin_dashboard_back/blob/main/docs/production-activation.md).
+
 ## Deployment
 
-The frontend currently has **no confirmed public URL**. Production configuration is prepared in [vercel.json](vercel.json): HTTPS `/api` forwarding to the existing Render backend, React Router SPA fallback and disabled API caching. The caller's Bearer Authorization is forwarded; no secret is embedded in the frontend. The approved design is unchanged.
+The [live application](https://admin-dashboard-front-blush.vercel.app/) runs on Vercel Free; the existing API runs on Render Free. [vercel.json](vercel.json) provides HTTPS `/api` forwarding, React Router SPA fallback, unchanged Bearer transmission and disabled API caching. Login, deep links, reloads, sessions and Logout have been checked against the real API. The approved design is unchanged.
 
-The owner deploys manually: Vercel **Vite**, Node.js **26.x**, repository root `./`, install `npm ci`, build `npm run build`, output `dist`. No environment variable is required; optional public `VITE_API_BASE_URL=/api`. Never copy backend secrets into frontend variables. Follow the [deployment and verification guide](docs/production-deployment.md). Any required backend CORS adjustment uses only the actual confirmed production origin, without guessed domains or `*`. Live proxy/authentication checks and Demo User activation follow the owner's deployment; they are not claimed complete by Git publication.
+The owner deploys manually: Vite, Node.js 26.x, repository root `./`, install `npm ci`, build `npm run build`, output `dist`. No environment variable is required; optional public `VITE_API_BASE_URL=/api`. Backend secrets do not belong in frontend variables. Render permits the confirmed frontend origin `https://admin-dashboard-front-blush.vercel.app` alongside the API origin used by Swagger. Git Auto-Deploy remains disabled. [Deployment guide](docs/production-deployment.md).
 
 ## Author
 
